@@ -222,7 +222,7 @@ class TestPlan(Mutable):
             version = Version(version)
         elif isinstance(version, basestring):
             version = Version(name=version, product=product)
-        hash["default_product_version"] = version.id
+        hash["product_version"] = version.id
 
         # Type
         if type is None:
@@ -242,7 +242,7 @@ class TestPlan(Mutable):
         hash["text"] = kwargs.get("document", " ")
 
         # Workaround for BZ#725995
-        hash["is_active"] = "1"
+        hash["is_active"] = True
 
         # Submit
         log.info("Creating a new test plan")
@@ -328,7 +328,7 @@ class TestPlan(Mutable):
         hash["is_active"] = self.status.id == 1
         if self.parent is not None:
             hash["parent"] = self.parent.id
-        hash["default_product_version"] = self.version.id
+        hash["product_version"] = self.version.id
         if self.owner is not None:
             hash["owner"] = self.owner.id
 
