@@ -22,6 +22,7 @@
 Mutable Nitrate objects
 """
 
+import re
 import datetime
 import nitrate.config as config
 
@@ -31,6 +32,15 @@ from nitrate.utils import pretty
 from nitrate.xmlrpc import NitrateError
 from nitrate.immutable import (Build, CaseStatus, Category, PlanStatus,
         PlanType, Priority, Product, RunStatus, Status, Tag, User, Version)
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#  Internal Utilities
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Hotfix for BZ#1128205
+def _convert_time(time):
+    """ Convert '01:02:03' into '1h2m' """
+    return re.sub(r"(\d+):(\d+):(\d+)", r"\1h\2m", time)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #  Mutable Class
@@ -656,7 +666,7 @@ class TestRun(Mutable):
         hash = {}
         hash["build"] = self.build.id
         hash["default_tester"] = self.tester.id
-        hash["estimated_time"] = self.time
+        hash["estimated_time"] = _convert_time(self.time)
         hash["manager"] = self.manager.id
         hash["notes"] = self.notes
         hash["errata_id"] = self.errata
@@ -939,7 +949,7 @@ class TestCase(Mutable):
         # Estimated time
         time = kwargs.get("time")
         if time is not None:
-            hash["estimated_time"] = time
+            hash["estimated_time"] = _convert_time(time)
 
         # Notes
         notes = kwargs.get("notes")
@@ -1041,7 +1051,7 @@ class TestCase(Mutable):
         hash["arguments"] = self.arguments
         hash["case_status"] = self.status.id
         hash["category"] = self.category.id
-        hash["estimated_time"] = self.time
+        hash["estimated_time"] = _convert_time(self.time)
         if self.automated and self.manual:
             hash["is_automated"] = 2
         elif self.automated:
