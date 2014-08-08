@@ -413,6 +413,8 @@ class CaseBugs(Container):
         log.info(u"Attaching {0} to {1}".format(
                 listed(bugs), self._identifier))
         data = [{
+                "summary": " ",
+                "description": " ",
                 "bug_id": bug.bug,
                 "bug_system_id": bug.system,
                 "case_id": self.id} for bug in bugs]
@@ -462,6 +464,8 @@ class CaseRunBugs(Container):
         log.info(u"Attaching {0} to {1}".format(
                 listed(bugs), self._identifier))
         data = [{
+                "summary": " ",
+                "description": " ",
                 "bug_id": bug.bug,
                 "bug_system_id": bug.system,
                 "case_run_id": self.id} for bug in bugs]
