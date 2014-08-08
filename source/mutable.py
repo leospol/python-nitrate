@@ -666,7 +666,8 @@ class TestRun(Mutable):
         hash = {}
         hash["build"] = self.build.id
         hash["default_tester"] = self.tester.id
-        hash["estimated_time"] = _convert_time(self.time)
+        # Hotfix for BZ#1128205
+        #hash["estimated_time"] = _convert_time(self.time)
         hash["manager"] = self.manager.id
         hash["notes"] = self.notes
         hash["errata_id"] = self.errata
@@ -947,9 +948,10 @@ class TestCase(Mutable):
         hash["is_automated_proposed"] = autoproposed
 
         # Estimated time
-        time = kwargs.get("time")
-        if time is not None:
-            hash["estimated_time"] = _convert_time(time)
+        # Hotfix for BZ#1128205
+        #time = kwargs.get("time")
+        #if time is not None:
+        #    #hash["estimated_time"] = _convert_time(time)
 
         # Notes
         notes = kwargs.get("notes")
@@ -1051,7 +1053,8 @@ class TestCase(Mutable):
         hash["arguments"] = self.arguments
         hash["case_status"] = self.status.id
         hash["category"] = self.category.id
-        hash["estimated_time"] = _convert_time(self.time)
+        # Hotfix for BZ#1128205
+        #hash["estimated_time"] = _convert_time(self.time)
         if self.automated and self.manual:
             hash["is_automated"] = 2
         elif self.automated:
